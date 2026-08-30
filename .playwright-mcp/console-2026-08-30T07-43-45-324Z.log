@@ -1,0 +1,5 @@
+[     333ms] [WARNING] VIDEOJS: WARN: A plugin named "reloadSourceOnError" already exists. You may want to avoid re-registering plugins! @ https://demoblaze.com/node_modules/video.js/dist/video.min.js:11
+[     585ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ https://demoblaze.com/prod.html?idp_=1:0
+[     585ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ https://demoblaze.com/prod.html?idp_=1:0
+[   21694ms] [ERROR] Access to XMLHttpRequest at 'https://api.demoblaze.com/view' from origin 'https://demoblaze.com' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ https://demoblaze.com/prod.html?idp_=1:0
+[   21694ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://api.demoblaze.com/view:0

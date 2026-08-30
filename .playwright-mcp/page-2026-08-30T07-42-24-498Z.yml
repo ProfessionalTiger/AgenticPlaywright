@@ -1,0 +1,50 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e3]:
+      - link "PRODUCT STORE" [ref=e4] [cursor=pointer]:
+        - /url: index.html
+      - list [ref=e7]:
+        - listitem [ref=e8]:
+          - link "Home (current)" [ref=e9] [cursor=pointer]:
+            - /url: index.html
+            - text: Home
+            - generic [ref=e10]: (current)
+        - listitem [ref=e11]:
+          - link "Contact" [ref=e12] [cursor=pointer]:
+            - /url: "#"
+        - listitem [ref=e13]:
+          - link "About us" [ref=e14] [cursor=pointer]:
+            - /url: "#"
+        - listitem [ref=e15]:
+          - link "Cart" [ref=e16] [cursor=pointer]:
+            - /url: cart.html
+        - listitem [ref=e17]:
+          - link "Log in" [ref=e18] [cursor=pointer]:
+            - /url: "#"
+        - listitem
+        - listitem
+        - listitem [ref=e19]:
+          - link "Sign up" [ref=e20] [cursor=pointer]:
+            - /url: "#"
+  - generic [ref=e24]:
+    - generic:
+      - list [ref=e25]:
+        - listitem [ref=e26] [cursor=pointer]
+        - listitem [ref=e27] [cursor=pointer]
+        - listitem [ref=e28] [cursor=pointer]
+      - link:
+        - /url: "#myCarousel-2"
+      - link:
+        - /url: "#myCarousel-2"
+  - generic [ref=e31]:
+    - generic [ref=e34]:
+      - heading "About Us" [level=4] [ref=e35]
+      - paragraph [ref=e36]: We believe performance needs to be validated at every stage of the software development cycle and our open source compatible, massively scalable platform makes that a reality.
+    - generic [ref=e39]:
+      - heading "Get in Touch" [level=4] [ref=e40]
+      - paragraph [ref=e41]: "Address: 2390 El Camino Real"
+      - paragraph [ref=e42]: "Phone: +440 123456"
+      - paragraph [ref=e43]: "Email: demo@blazemeter.com"
+    - heading "PRODUCT STORE" [level=4] [ref=e47]
+  - contentinfo [ref=e49]:
+    - paragraph [ref=e50]: Copyright © Product Store
