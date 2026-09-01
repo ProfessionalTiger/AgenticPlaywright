@@ -31,9 +31,7 @@ PlayWrite_AI_Agnet_Automation/
 ├── specs/
 │   └── README.md                 # Scenario planning and documentation
 ├── tests/
-│   ├── demoblaze-cart.spec.ts    # Cart validation scenario
-│   ├── react-shopping-cart.spec.ts # React cart flow scenario
-│   ├── example.spec.ts           # Basic example test
+│   ├── demoblaze-cart.spec.ts    # DemoBlaze end-to-end coverage
 │   └── seed.spec.ts              # Template for new scenarios
 ├── package.json                   # Project configuration and dependencies
 ├── playwright.config.ts           # Playwright settings
@@ -43,6 +41,29 @@ PlayWrite_AI_Agnet_Automation/
 ```
 
 ## Getting started
+
+The DemoBlaze suite uses Page Objects under `tests/pages`, reusable fixtures under
+`tests/fixtures`, and shared data under `tests/utils`.
+
+Run the suite with `npm test`, or run TypeScript validation with `npm run typecheck`.
+
+## Allure reporting
+
+Run tests after clearing previous Allure results:
+
+```bash
+npm run test:allure
+```
+
+Generate and open the interactive report locally:
+
+```bash
+npm run allure:report
+```
+
+The generated `allure-report` directory is a static HTML artifact that can be
+published by CI or shared as a zip archive. `allure:open` requires Java because
+the Allure command-line tool serves the report locally.
 
 ### 1. Install dependencies
 

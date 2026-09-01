@@ -1,27 +1,87 @@
-import { test, expect } from '@playwright/test';
+import { test } from './fixtures/test-fixtures';
+import { createTestUser, testData } from './utils/test-data';
+import { allure } from 'allure-playwright';
 
-test('add Samsung galaxy s6 to cart and validate cart price', async ({ page }) => {
-  await page.goto('https://demoblaze.com/prod.html?idp_=1', { waitUntil: 'domcontentloaded' });
+test('user can login and successfully place an order', async ({ homePage, loginPage, productPage, cartPage, checkoutPage, registeredUser }) => {
+  await allure.epic('E-commerce');
+  await allure.feature('Order management');
+  await allure.story('Authenticated customer places an order');
+  await allure.severity('critical');
+  await allure.attachment('test-environment', JSON.stringify({ browser: test.info().project.name, baseURL: test.info().project.use.baseURL }), 'application/json');
 
-  await expect(page.getByRole('heading', { name: 'Samsung galaxy s6' })).toBeVisible({ timeout: 30000 });
+  await test.step('Login', async () => {
+    await loginPage.open();
+    await loginPage.login(registeredUser.username, registeredUser.password);
+    await loginPage.expectLoggedIn(registeredUser.username);
+  });
+  await test.step('Select product and add it to cart', async () => {
+    await homePage.selectProduct(testData.product.name);
+    await productPage.expectProduct(testData.product.name, testData.product.price);
+    await productPage.addToCart();
+  });
+  await test.step('Complete checkout', async () => {
+    await homePage.openCart();
+    await cartPage.expectProduct(testData.product.name, testData.product.price);
+    await cartPage.expectTotal(testData.product.price);
+    await cartPage.placeOrder();
+    await checkoutPage.completeOrder(testData.order);
+    await checkoutPage.expectOrderConfirmation();
+  });
+});
 
-  const addToCartLink = page.getByRole('link', { name: /^Add to cart$/i }).first();
-  await expect(addToCartLink).toBeVisible({ timeout: 30000 });
+test('user can login with valid credentials', async ({ loginPage, registeredUser }) => {
+  await loginPage.open();
+  await loginPage.login(registeredUser.username, registeredUser.password);
+  await loginPage.expectLoggedIn(registeredUser.username);
+});
 
-  const dialogPromise = page.waitForEvent('dialog');
-  await addToCartLink.click();
+test('new user can sign up successfully', async ({ homePage, signUpPage }) => {
+  const user = createTestUser();
+  await homePage.open();
+  await signUpPage.register(user.username, user.password);
+});
 
-  const dialog = await dialogPromise;
-  expect(dialog.type()).toBe('alert');
-  await dialog.accept();
+test('invalid login credentials show an error', async ({ loginPage }) => {
+  await loginPage.open();
+  await loginPage.expectLoginError(testData.invalidUser.username, testData.invalidUser.password, 'User does not exist');
+});
 
-  const cartLink = page.locator('#cartur');
-  await expect(cartLink).toBeVisible({ timeout: 20000 });
-  await cartLink.click();
+test('user can open a product and verify its details', async ({ homePage, productPage }) => {
+  await homePage.open();
+  await homePage.selectProduct(testData.product.name);
+  await productPage.expectProduct(testData.product.name, testData.product.price);
+});
 
-  const cartRow = page.locator('#tbodyid tr').filter({ hasText: 'Samsung galaxy s6' }).first();
-  await expect(cartRow).toContainText('Samsung galaxy s6', { timeout: 30000 });
+test('user can add a product to the cart', async ({ homePage, productPage, cartPage }) => {
+  await homePage.open();
+  await homePage.selectProduct(testData.product.name);
+  await productPage.addToCart();
+  await homePage.openCart();
+  await cartPage.expectProduct(testData.product.name, testData.product.price);
+});
 
-  const priceCell = cartRow.locator('td').nth(2);
-  await expect(priceCell).toContainText('360', { timeout: 30000 });
+test('cart total is calculated correctly', async ({ homePage, productPage, cartPage }) => {
+  await homePage.open();
+  await homePage.selectProduct(testData.product.name);
+  await productPage.addToCart();
+  await homePage.openCart();
+  await cartPage.expectTotal(testData.product.price);
+});
+
+test('user can remove a product from the cart', async ({ homePage, productPage, cartPage }) => {
+  await homePage.open();
+  await homePage.selectProduct(testData.product.name);
+  await productPage.addToCart();
+  await homePage.openCart();
+  await cartPage.removeProduct(testData.product.name);
+  await cartPage.expectEmptyTotal();
+});
+
+test('user can open the Place Order dialog', async ({ homePage, productPage, cartPage, checkoutPage }) => {
+  await homePage.open();
+  await homePage.selectProduct(testData.product.name);
+  await productPage.addToCart();
+  await homePage.openCart();
+  await cartPage.placeOrder();
+  await checkoutPage.expectOpen();
 });

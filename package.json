@@ -3,13 +3,26 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "playwright test",
+    "test:chromium": "playwright test --project=chromium",
+    "test:allure": "npm run allure:clean && playwright test",
+    "allure:clean": "rimraf allure-results allure-report",
+    "allure:generate": "allure generate allure-results --clean -o allure-report",
+    "allure:open": "allure open allure-report",
+    "allure:report": "npm run allure:generate && npm run allure:open",
+    "typecheck": "tsc --noEmit"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
     "@playwright/test": "^1.62.1",
-    "@types/node": "^26.4.0"
+    "@types/node": "^26.4.0",
+    "allure-commandline": "^2.43.0",
+    "allure-playwright": "^3.11.1",
+    "rimraf": "^6.1.3",
+    "typescript": "^7.0.2"
   }
 }
