@@ -17,5 +17,7 @@ export class HomePage {
     await this.page.getByRole('link', { name: 'Cart', exact: true }).click();
     await expect(this.page).toHaveURL(/cart\.html/);
     await cartResponse;
+    // DemoBlaze renders cart rows asynchronously after the API response.
+    await this.page.waitForTimeout(1000);
   }
 }
