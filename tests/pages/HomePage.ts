@@ -13,7 +13,9 @@ export class HomePage {
   }
 
   async openCart() {
+    const cartResponse = this.page.waitForResponse(response => response.url().includes('/viewcart'));
     await this.page.getByRole('link', { name: 'Cart', exact: true }).click();
     await expect(this.page).toHaveURL(/cart\.html/);
+    await cartResponse;
   }
 }

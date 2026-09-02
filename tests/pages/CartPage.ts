@@ -19,6 +19,22 @@ export class CartPage {
     await expect(this.total).toBeEmpty();
   }
 
+  async clear() {
+    const rows = this.page.locator('#tbodyid tr');
+
+    while (await rows.count() > 0) {
+      const row = rows.first();
+      const deleteResponse = this.page.waitForResponse(response => response.url().includes('/deleteitem'));
+      const cartResponse = this.page.waitForResponse(response => response.url().includes('/viewcart'));
+      await row.getByRole('link', { name: 'Delete' }).click();
+      await deleteResponse;
+      await cartResponse;
+      await expect(row).toHaveCount(0);
+    }
+
+    await expect(this.total).toBeEmpty();
+  }
+
   async removeProduct(productName: string) {
     const row = this.page.locator('#tbodyid tr').filter({ hasText: productName }).first();
     await row.getByRole('link', { name: 'Delete' }).click();
