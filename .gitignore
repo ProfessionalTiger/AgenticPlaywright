@@ -8,3 +8,4 @@ node_modules/
 /allure-report/
 /playwright/.cache/
 /playwright/.auth/
+/tests/.auth/

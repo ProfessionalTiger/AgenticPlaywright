@@ -16,8 +16,23 @@ export class HomePage {
     const cartResponse = this.page.waitForResponse(response => response.url().includes('/viewcart'));
     await this.page.getByRole('link', { name: 'Cart', exact: true }).click();
     await expect(this.page).toHaveURL(/cart\.html/);
-    await cartResponse;
-    // DemoBlaze renders cart rows asynchronously after the API response.
-    await this.page.waitForTimeout(1000);
+
+    const response = await cartResponse;
+    await response.finished();
+
+    const cartBody = this.page.locator('#tbodyid');
+    let previousMarkup = '';
+    let stablePolls = 0;
+
+    await expect.poll(async () => {
+      const markup = await cartBody.innerHTML();
+      if (markup === previousMarkup) {
+        stablePolls += 1;
+      } else {
+        previousMarkup = markup;
+        stablePolls = 0;
+      }
+      return stablePolls;
+    }, { timeout: 5000, intervals: [100, 200, 500, 1000] }).toBeGreaterThanOrEqual(3);
   }
 }

@@ -14,7 +14,7 @@ export const test = base.extend<{
   cartPage: CartPage;
   checkoutPage: CheckoutPage;
   signUpPage: SignUpPage;
-  registeredUser: User;
+  customerUser: User;
 }>({
   homePage: async ({ page }, use) => await use(new HomePage(page)),
   loginPage: async ({ page }, use) => await use(new LoginPage(page)),
@@ -22,9 +22,20 @@ export const test = base.extend<{
   cartPage: async ({ page }, use) => await use(new CartPage(page)),
   checkoutPage: async ({ page }, use) => await use(new CheckoutPage(page)),
   signUpPage: async ({ page }, use) => await use(new SignUpPage(page)),
-  registeredUser: async ({ homePage, signUpPage }, use, testInfo) => {
+  customerUser: async ({ homePage, signUpPage }, use) => {
+    const configuredUsername = process.env.TEST_USERNAME;
+    const configuredPassword = process.env.TEST_PASSWORD;
+
+    if (configuredUsername && configuredPassword) {
+      await use({ username: configuredUsername, password: configuredPassword });
+      return;
+    }
+
+    if (configuredUsername || configuredPassword) {
+      throw new Error('TEST_USERNAME and TEST_PASSWORD must be provided together.');
+    }
+
     const user = createTestUser();
-    user.username += `_${testInfo.workerIndex}`;
     await homePage.open();
     await signUpPage.register(user.username, user.password);
     await use(user);

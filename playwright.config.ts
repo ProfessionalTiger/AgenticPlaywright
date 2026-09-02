@@ -13,14 +13,13 @@ import { defineConfig, devices } from '@playwright/test';
  */
 export default defineConfig({
   testDir: './tests',
-  /* Run tests in files in parallel */
-  fullyParallel: true,
+  /* Tests share a server-side customer cart, so run them serially. */
+  fullyParallel: false,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
-  /* Opt out of parallel tests on CI. */
-  /* Tests use one shared server-side customer cart, so run them serially. */
+  /* Keep the shared customer cart isolated between tests. */
   workers: 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [
@@ -34,7 +33,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('')`. */
-    baseURL: 'https://demoblaze.com',
+    baseURL: process.env.BASE_URL ?? 'https://demoblaze.com',
     ignoreHTTPSErrors: true,
     navigationTimeout: 60000,
     screenshot: 'only-on-failure',

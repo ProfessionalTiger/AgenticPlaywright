@@ -112,6 +112,18 @@ Validate TypeScript:
 npm run typecheck
 ```
 
+Optional environment variables can provide an existing customer account:
+
+```text
+BASE_URL=https://demoblaze.com
+TEST_USERNAME=your-customer-username
+TEST_PASSWORD=your-customer-password
+```
+
+If both customer variables are omitted, the setup fixture creates a unique
+temporary customer account for the run. Provide both variables together when
+using a pre-existing account.
+
 The first test run executes the `setup` project automatically. It signs up and
 logs in a customer, then saves the authenticated browser state to
 `tests/.auth/customer.json`. Browser projects depend on this setup project and
@@ -189,6 +201,14 @@ Available reporting commands:
 | `npm run allure:generate` | Build static HTML from results |
 | `npm run allure:open` | Serve the generated report locally |
 | `npm run allure:report` | Generate and serve the report |
+
+Additional development commands:
+
+| Command | Purpose |
+| --- | --- |
+| `npm run test:headed` | Run tests with a visible browser |
+| `npm run test:debug` | Run tests in Playwright Inspector debug mode |
+| `npm run test:report` | Open the latest Playwright HTML report |
 
 ## Test organization
 
